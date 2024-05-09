@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+form .title {
+  @apply text-3xl font-medium text-cyan-700;
+}
