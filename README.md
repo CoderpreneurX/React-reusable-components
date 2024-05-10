@@ -9,6 +9,7 @@ A collection of all the React components made by me that can be reutilized for a
 5) Autoprefixer: Required by tailwind.
 6) Postcss: Reguired by tailwind.
 7) JWT-Decode: To decode JWT Tokens.
+8) React-Router-DOM: To navigate to different window locations.
 
 # How to use
 If you want to use a single component, just copy the file on your system, tweak it as necessary, and you can use it rightaway. If you want to use the whole project itself, follow the installation guide.
