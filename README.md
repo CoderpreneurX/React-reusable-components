@@ -8,6 +8,7 @@ A collection of all the React components made by me that can be reutilized for a
 4) Tailwind CSS: A utility CSS framework to quickly add designs to components.
 5) Autoprefixer: Required by tailwind.
 6) Postcss: Reguired by tailwind.
+7) JWT-Decode: To decode JWT Tokens.
 
 # How to use
 If you want to use a single component, just copy the file on your system, tweak it as necessary, and you can use it rightaway. If you want to use the whole project itself, follow the installation guide.
