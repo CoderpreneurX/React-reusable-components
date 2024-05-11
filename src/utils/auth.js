@@ -96,3 +96,21 @@ export async function isUserAuthenticated() {
         }
     }
 }
+
+export async function getUserProfile() {
+    return client.get(
+        '/api/auth/profile/'
+    ).then((response) => {
+        console.log('Auth profile', response)
+        if (response.status === 200) {
+            return {
+                profile: response.data,
+                type: 'success',
+            }
+        } else {
+            return {
+                type: 'failure'
+            }
+        }
+    })
+}
