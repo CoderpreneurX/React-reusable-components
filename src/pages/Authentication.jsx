@@ -1,23 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
+import { isUserAuthenticated, loginUser, registerUser } from '../utils/auth'
+import { useNavigate } from 'react-router-dom'
+import Loading from '../components/Loading'
 
 export default function Authentication() {
-   function loginUser(fd) { //fd is short for formdata
-      console.log('Logged in', fd)
+   const [isLoading, setIsLoading] = useState(true)
+   const navigate = useNavigate()
+
+   function handleLoginUser(fd) { //fd is short for formdata
+      async function login(fd) {
+         const response = await loginUser(fd)
+         if (response.type === 'failure') {
+            console.error(response.message)
+         } else {
+            console.log(response.message)
+         }
+      }
+
+      login(fd)
    }
 
-   function registerUser(fd) { //fd is short for formdata
-      console.log('Registered', fd)
+   function handleRegisterUser(fd) { //fd is short for formdata
+      async function register(fd) {
+         const response = await registerUser(fd)
+         if (response.type === 'failure') {
+            console.error(response.message)
+         } else {
+            console.log(response.message)
+         }
+      }
+
+      register(fd)
    }
+
+   useEffect(() => {
+      async function checkIsAuthenticated() {
+         if (await isUserAuthenticated()) {
+            setIsLoading(false)
+            navigate('/')
+         } else {
+            setIsLoading(false)
+         }
+      }
+
+      checkIsAuthenticated()
+   }, [])
 
    const [isRegisterFormHidden, setIsRegisterFormHidden] = useState(true)
    return (
       <>
-         <div className="h-screen grid place-items-center">
+         {!isLoading ? (<div className="h-screen grid place-items-center">
             <div className='grid gap-2 w-full text-center'>
-               <LoginForm onSubmit={loginUser} hidden={!isRegisterFormHidden} />
-               <RegisterForm onSubmit={registerUser} hidden={isRegisterFormHidden} />
+               <LoginForm onSubmit={handleLoginUser} hidden={!isRegisterFormHidden} />
+               <RegisterForm onSubmit={handleRegisterUser} hidden={isRegisterFormHidden} />
 
                {
                   isRegisterFormHidden ? (
@@ -33,7 +70,7 @@ export default function Authentication() {
                         <p>
                            Already have an account?
                            <button
-                           className='text-blue-600 ml-2 underline'
+                              className='text-blue-600 ml-2 underline'
                               onClick={() => setIsRegisterFormHidden(true)}>
                               Login
                            </button>
@@ -41,7 +78,9 @@ export default function Authentication() {
                      )
                }
             </div>
-         </div>
+         </div>) : (
+            <Loading />
+         )}
       </>
    )
 }
