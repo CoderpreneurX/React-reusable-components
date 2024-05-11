@@ -1,4 +1,5 @@
 import { client } from "./api";
+import { accessToken, isAccessTokenExpired, refreshAccessToken, setTokensToLocalStorage } from "./token";
 
 export async function loginUser(formdata) {
     return client.post(
@@ -7,6 +8,13 @@ export async function loginUser(formdata) {
     ).then((response) => {
         switch (response.status) {
             case 200:
+                const tokens = {
+                    access: response.data.access,
+                    refresh: response.data.refresh
+                }
+
+                setTokensToLocalStorage(tokens)
+
                 return {
                     message: 'Log in successful, redirecting!',
                     type: 'success'
@@ -73,4 +81,18 @@ export async function createProfile(formdata) {
     ).then((response) => {
         return response
     })
+}
+
+export async function isUserAuthenticated() {
+    if (accessToken && !isAccessTokenExpired()) {
+        return true
+    } else {
+        const response = await refreshAccessToken()
+
+        if (response.type === 'success') {
+            return true
+        } else {
+            return false
+        }
+    }
 }
