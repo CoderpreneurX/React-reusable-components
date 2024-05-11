@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+
 form .title {
   @apply text-3xl font-medium text-cyan-700;
+}
+
+.centered-grid {
+    @apply grid place-items-center h-screen;
+}
+
+.profile-avatar {
+    @apply grid h-44 w-44 overflow-hidden rounded-full border-2;
+}
+
+.profile-avatar > * {
+    @apply col-start-1 row-start-1;
+}
+
+.change-avatar-overlay {
+    @apply w-full z-10 bg-green-600 grid place-items-center bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity cursor-pointer;
+}
+
+.change-avatar-overlay > * {
+    @apply text-white;
+}
+
+.profile-card {
+    @apply sm:border sm:shadow-xl p-4 grid place-items-center w-full max-w-md mx-auto rounded-lg;
+}
+
+.card-contents {
+    @apply sm:-translate-y-14 grid place-items-center gap-4 border sm:border-none rounded-lg p-4;
+}
+
+.profile-card > .card-contents > * {
+    @apply font-medium text-slate-500 text-lg sm:text-xl;
+}
+
+.profile-card > .card-contents h1.fullname {
+    @apply text-3xl text-cyan-600;
 }
