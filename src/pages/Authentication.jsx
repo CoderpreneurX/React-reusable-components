@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
-import { isUserAuthenticated, loginUser, registerUser } from '../utils/auth'
+import { loginUser, registerUser } from '../utils/auth'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../components/Loading'
 
 export default function Authentication() {
-   const [isLoading, setIsLoading] = useState(true)
+   const [isLoading, setIsLoading] = useState(false)
    const navigate = useNavigate()
 
    function handleLoginUser(fd) { //fd is short for formdata
@@ -34,19 +34,6 @@ export default function Authentication() {
 
       register(fd)
    }
-
-   useEffect(() => {
-      async function checkIsAuthenticated() {
-         if (await isUserAuthenticated()) {
-            setIsLoading(false)
-            navigate('/')
-         } else {
-            setIsLoading(false)
-         }
-      }
-
-      checkIsAuthenticated()
-   }, [])
 
    const [isRegisterFormHidden, setIsRegisterFormHidden] = useState(true)
    return (
