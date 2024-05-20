@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { TextInput, Button } from 'flowbite-react'
 import { FaCircleUser, FaLock } from 'react-icons/fa6'
 
-export default function LoginForm({ hidden, onSubmit }) {
+export default function LoginForm({ hidden, onSubmit, message }) {
    const usernameField = useRef(null)
    const passwordField = useRef(null)
 
@@ -16,8 +16,22 @@ export default function LoginForm({ hidden, onSubmit }) {
 
       onSubmit(formdata)
    }
+
+   useEffect(() => {
+      console.log('Login message', message)
+   }, [message])
    return (
       <>
+         {!hidden && message && (
+            <div className="message">
+               {message.type === 'error' ? (<div className="error-message">
+                  <h1 className="message">{message.message}</h1>
+               </div>) :
+                  (<div className='success-message'>
+                     <h1>{message.message}</h1>
+                  </div>)}
+            </div>
+         )}
          {!hidden && (
             <form onSubmit={handleLogin} className='grid max-w-72 gap-3 w-full mx-auto'>
                <div className='text-center'>
