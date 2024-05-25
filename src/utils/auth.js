@@ -1,5 +1,5 @@
 import { client } from "./api";
-import { accessToken, isAccessTokenExpired, refreshAccessToken, setTokensToLocalStorage } from "./token";
+import { getRefreshToken, isAccessTokenExpired, refreshAccessToken, setTokensToLocalStorage, getAccessToken } from "./token";
 
 export async function loginUser(formdata) {
     return client.post(
@@ -42,32 +42,23 @@ export async function loginUser(formdata) {
 }
 
 export async function registerUser(formdata) {
-    return client.post(
-        '/api/auth/register/',
-        formdata
-    ).then((response) => {
+    return client.post('/api/auth/register/', formdata).then((response) => {
         switch (response.status) {
             case 201:
                 return {
-                    message: 'User created successfully, please login!',
+                    message: 'Registration successful, please login!',
                     type: 'success'
                 }
 
             case 400:
                 return {
                     message: response.data,
-                    type: 'failure'
-                }
-
-            case 500:
-                return {
-                    message: 'Some internal error occured, please try later!',
-                    type: 'failure'
+                    type: 'field_error'
                 }
 
             default:
                 return {
-                    message: response.data,
+                    message: 'Some internal error occured, please try later!',
                     type: 'failure'
                 }
         }
@@ -83,31 +74,45 @@ export async function createProfile(formdata) {
     })
 }
 
-export async function isUserAuthenticated() {
+export function isUserAuthenticated() {
+    const accessToken = getAccessToken()
     if (accessToken && !isAccessTokenExpired()) {
         return true
     } else {
-        const response = await refreshAccessToken()
-
-        if (response.type === 'success') {
-            return true
-        } else {
-            return false
-        }
+        return false
     }
 }
 
 export async function getUserProfile() {
     return client.get(
-        '/api/auth/profile/'
+        '/api/auth/profile/',
     ).then((response) => {
-        console.log('Auth profile', response)
         if (response.status === 200) {
             return {
                 profile: response.data,
-                type: 'success',
+                type: 'success'
             }
         } else {
+            console.log(response)
+            return {
+                type: 'failure'
+            }
+        }
+    })
+}
+
+export async function updateUserProfile(fd) {
+    return client.put(
+        '/api/auth/profile/edit/',
+        fd
+    ).then((response) => {
+        if (response.status === 200) {
+            return {
+                profile: response.data,
+                type: 'success'
+            }
+        } else {
+            console.log(response)
             return {
                 type: 'failure'
             }
