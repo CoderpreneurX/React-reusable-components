@@ -1,8 +1,12 @@
 import { jwtDecode } from 'jwt-decode'
 import { client } from './api'
 
-export const accessToken = localStorage.getItem('access')
-export const refreshToken = localStorage.getItem('refresh')
+export function getAccessToken() {
+    return localStorage.getItem('access')
+}
+export function getRefreshToken() {
+    return localStorage.getItem('refresh')
+}
 
 export function setTokensToLocalStorage(tokens) {
     localStorage.setItem('access', tokens.access)
@@ -10,30 +14,40 @@ export function setTokensToLocalStorage(tokens) {
 }
 
 export function isAccessTokenExpired() {
-    const expirationTime = jwtDecode(accessToken).exp
-    const currentTime = Math.floor(Date.now() / 1000)
+    const accessToken = getAccessToken()
 
-    return currentTime >= expirationTime
+    if (accessToken) {
+        const expirationTime = jwtDecode(accessToken).exp
+        const currentTime = Math.floor(Date.now() / 1000)
+        return currentTime >= expirationTime
+    } else {
+        throw new Error('No access token found!')
+    }
+
 }
 
 export async function refreshAccessToken() {
-    if (refreshToken) {
+    const refreshToken = getRefreshToken()
+    if (refreshToken !== null) {
         return client.post(
             '/api/token/refresh/',
-            { refresh: refreshToken }
+            {
+                refresh: refreshToken
+            }
         ).then((response) => {
             if (response.status === 200) {
                 const tokens = {
                     access: response.data.access,
-                    refresh: refreshToken,
+                    refresh: refreshToken
                 }
+
                 setTokensToLocalStorage(tokens)
 
-                console.log('Token refreshed')
+                console.log('Refreshed tokens')
 
-                return {
-                    type: 'success'
-                }
+                return { type: 'success' }
+            } else {
+                return { type: 'failure' }
             }
         })
     } else {
