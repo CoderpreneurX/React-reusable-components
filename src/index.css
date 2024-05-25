@@ -2,6 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
+
 form .title {
   @apply text-3xl font-medium text-cyan-700;
+}
+
+.centered-grid {
+    @apply grid place-items-center h-screen;
+}
+
+.profile-avatar {
+    @apply grid h-44 w-44 overflow-hidden rounded-full border-2;
+}
+
+.profile-avatar > * {
+    @apply col-start-1 row-start-1;
+}
+
+.change-avatar-overlay {
+    @apply w-full z-10 bg-green-600 grid place-items-center bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity cursor-pointer;
+}
+
+.change-avatar-overlay > * {
+    @apply text-white;
+}
+
+.profile-card {
+    @apply sm:border sm:shadow-xl p-4 grid place-items-center w-full max-w-md mx-auto rounded-lg;
+}
+
+.card-contents {
+    @apply sm:-translate-y-14 grid place-items-center gap-4 border sm:border-none rounded-lg p-4;
+}
+
+.profile-card > .card-contents > * {
+    @apply font-medium text-slate-500 text-lg sm:text-xl;
+}
+
+.profile-card > .card-contents h1.fullname {
+    @apply text-3xl text-cyan-600;
+}
+
+div.messages {
+    @apply absolute top-0 w-full my-16;
+}
+
+.error-message {
+    @apply bg-red-300 w-full max-w-sm mx-auto font-medium px-3 py-2 rounded border-l-8 border-red-600;
+  }
+
+.success-message {
+    @apply bg-green-300 w-full max-w-sm mx-auto font-medium px-3 py-2 rounded border-l-8 border-green-600;
+}
+
+.error-field > *input {
+    @apply border-red-600;
+}
+
+div.alert.error {
+    @apply bg-red-300 border-l-4 border-red-600 max-w-lg rounded px-3 py-2 text-left w-full mx-auto mb-12;
+}
+
+h1.error {
+    @apply text-left text-red-600 text-sm;
+}
+
+h1.help-text {
+    @apply text-left text-sm text-green-600;
+}
+
+div.tooltip {
+    @apply rounded-lg z-10 bg-black text-slate-100 absolute text-sm bottom-[calc(100%+12px)];
 }
