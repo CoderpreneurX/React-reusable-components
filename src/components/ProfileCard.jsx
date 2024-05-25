@@ -1,13 +1,16 @@
 import React from 'react'
 import ProfileAvatar from './ProfileAvatar'
 import { FaEnvelope, FaLocationDot } from 'react-icons/fa6'
+import { Button } from 'flowbite-react'
+import { useNavigate } from 'react-router-dom'
 
-export default function ProfileCard({ image, profile, hidden }) {
+export default function ProfileCard({ profile, hidden }) {
+  const navigate = useNavigate()
   return (
     <>
       {!hidden && <div className='profile-card'>
         <div className='card-contents'>
-          <ProfileAvatar image={image} />
+          <ProfileAvatar image={profile.profile_picture} />
           <div>
             <h1 className="fullname">{profile.first_name} {profile.last_name}</h1>
             <h1 className="username">@{profile.username}</h1>
@@ -23,6 +26,7 @@ export default function ProfileCard({ image, profile, hidden }) {
             </div>
           </div>
         </div>
+        <Button onClick={() => navigate('/edit-profile')} className='w-full'>Edit Profile</Button>
       </div>}
     </>
   )
