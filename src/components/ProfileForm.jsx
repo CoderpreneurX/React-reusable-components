@@ -1,80 +1,92 @@
-import React, {useRef} from 'react'
+import React, { useRef, useState } from 'react'
 import { Button, TextInput, Textarea } from 'flowbite-react'
+import ProfileAvatar from './ProfileAvatar'
+import AvatarCropper from './AvatarCropper'
 
-export default function EditProfileForm({ onSubmit, hidden }) {
-   const firstnameField = useRef(null)
-   const lastnameField = useRef(null)
-   const bioField = useRef(null)
-   const countryField = useRef(null)
-   const cityField = useRef(null)
+export default function ProfileForm({ onSubmit, hidden, messages, type = 'create' }) {
+   const [isCropperEnabled, setIsCropperEnabled] = useState(false)
+   const [croppedImage, setCroppedImage] = useState(null)
 
    function handleFormSubmit(e) {
       e.preventDefault()
       const formdata = new FormData()
 
-      formdata.append('first_name', firstnameField.current.value)
-      formdata.append('last_name', lastnameField.current.value)
-      formdata.append('bio', bioField.current.value)
-      formdata.append('country', countryField.current.value)
-      formdata.append('city', cityField.current.value)
+      formdata.append('first_name', e.target.first_name.value)
+      formdata.append('last_name', e.target.last_name.value)
+      formdata.append('bio', e.target.bio.value)
+      formdata.append('country', e.target.country.value)
+      formdata.append('city', e.target.city.value)
+      formdata.append('profile_picture', croppedImage)
 
       onSubmit(formdata)
    }
+
+   async function handleCroppedImage(image) {
+      setCroppedImage(image)
+      setIsCropperEnabled(false)
+   }
    return (
       <>
-         {!hidden && <form onSubmit={handleFormSubmit} className='flex flex-col items-center gap-2 w-full sm:max-w-md sm:mx-auto sm:shadow-xl sm:rounded-lg p-4 sm:border'>
-            <div className='text-center mb-8'>
-               <h1 className='font-bold text-cyan-700 text-4xl'>Create Profile</h1>
-               <h1 className='text-slate-600'>Enter your credentials to continue</h1>
-            </div>
-            <div className='grid gap-2 max-w-sm w-full'>
-               <TextInput
-                  type="text"
-                  name='first_name'
-                  id='first_name'
-                  placeholder='First name'
-                  ref={firstnameField}
-                  required
-               />
-               <TextInput
-                  type="text"
-                  name='last_name'
-                  id='last_name'
-                  placeholder='Last name'
-                  ref={lastnameField}
-                  required
-               />
-
-            </div>
-            <div className='grid gap-2 max-w-sm w-full'>
+         {isCropperEnabled && (
+            <AvatarCropper onCrop={(image) => handleCroppedImage(image)} />
+         )}
+         {!hidden && !isCropperEnabled && <form onSubmit={handleFormSubmit}>
+            <div className="sm:rounded-lg grid w-full max-w-md gap-2.5 sm:shadow-xl sm:px-6 sm:border p-4">
+               <div className="text-center py-2">
+                  <h1 className="font-medium text-3xl text-cyan-600">Edit Profile</h1>
+                  <p className="text-slate-600">Enter your credentials to continue</p>
+               </div>
+               <div className="flex justify-between gap-2.5 flex-wrap items-center">
+                  <div className='mx-auto'>
+                     <ProfileAvatar image={croppedImage} onClick={() => setIsCropperEnabled(true)} isEditable={true} />
+                  </div>
+                  <div className="grid gap-2.5 w-full flex-1">
+                     <TextInput
+                        className="min-w-max"
+                        type="text"
+                        placeholder="First name"
+                        name='first_name'
+                        shadow={true}
+                        required
+                     />
+                     <TextInput
+                        className="min-w-max"
+                        type="text"
+                        placeholder="Last name"
+                        name='last_name'
+                        shadow
+                        required
+                     />
+                  </div>
+               </div>
                <Textarea
+                  placeholder="Describe yourself..."
+                  rows="5"
+                  shadow
                   name='bio'
-                  id='bio'
-                  placeholder='Describe yourself...'
-                  rows={4}
-                  ref={bioField}
                   required
-               />
+               >
+               </Textarea>
+               <div className="grid gap-2">
+                  <TextInput
+                     className="w-auto"
+                     type="text"
+                     placeholder="Country"
+                     name='country'
+                     shadow
+                     required
+                  />
+                  <TextInput
+                     className="w-auto"
+                     type="text"
+                     placeholder="City"
+                     name='city'
+                     shadow
+                     required
+                  />
+               </div>
+               <Button className='max-w-sm w-full' type='submit'>Save</Button>
             </div>
-            <div className='grid gap-2 max-w-sm w-full'>
-               <TextInput
-                  type='text'
-                  name='country'
-                  id='country'
-                  placeholder='Country'
-                  ref={countryField}
-                  required
-               />
-               <TextInput
-                  type='text'
-                  name='city'
-                  id='city'
-                  placeholder='City'
-                  ref={cityField}
-                  required
-               />
-            </div>
-            <Button className='max-w-sm w-full' type='submit'>Save</Button>
          </form>}
       </>
    )
