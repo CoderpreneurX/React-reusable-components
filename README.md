@@ -1,6 +1,16 @@
 # React-reusable-components
 A collection of all the React components made by me that can be reutilized for any project
 
+# Components list
+1) Protected Route
+2) Profile Avatar
+3) Profile Card
+4) Profile Form
+5) Avatar Cropper
+6) Login Form
+7) Register Form
+8) Loading Page
+
 # Packages utilized
 1) Vite JS: To quickly create a template for development of the project.
 2) Axios: To send XHR requests to the backend.
