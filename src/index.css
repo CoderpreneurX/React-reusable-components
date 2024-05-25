@@ -42,3 +42,35 @@ form .title {
 .profile-card > .card-contents h1.fullname {
     @apply text-3xl text-cyan-600;
 }
+
+div.messages {
+    @apply absolute top-0 w-full my-16;
+}
+
+.error-message {
+    @apply bg-red-300 w-full max-w-sm mx-auto font-medium px-3 py-2 rounded border-l-8 border-red-600;
+  }
+
+.success-message {
+    @apply bg-green-300 w-full max-w-sm mx-auto font-medium px-3 py-2 rounded border-l-8 border-green-600;
+}
+
+.error-field > *input {
+    @apply border-red-600;
+}
+
+div.alert.error {
+    @apply bg-red-300 border-l-4 border-red-600 max-w-lg rounded px-3 py-2 text-left w-full mx-auto mb-12;
+}
+
+h1.error {
+    @apply text-left text-red-600 text-sm;
+}
+
+h1.help-text {
+    @apply text-left text-sm text-green-600;
+}
+
+div.tooltip {
+    @apply rounded-lg z-10 bg-black text-slate-100 absolute text-sm bottom-[calc(100%+12px)];
+}
