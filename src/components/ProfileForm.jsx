@@ -16,7 +16,10 @@ export default function ProfileForm({ onSubmit, hidden, messages, type = 'create
       formdata.append('bio', e.target.bio.value)
       formdata.append('country', e.target.country.value)
       formdata.append('city', e.target.city.value)
-      formdata.append('profile_picture', croppedImage)
+
+      if (croppedImage) {
+         formdata.append('profile_picture', croppedImage)
+      }
 
       onSubmit(formdata)
    }
