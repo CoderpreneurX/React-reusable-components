@@ -8,18 +8,24 @@ export default function EditProfile() {
    const [formErrors, setFormErrors] = useState(null)
    const navigate = useNavigate()
    function handleProfileEdit(fd) {
-      const base64ImageData = fd.get('profile_picture')
-      const binaryString = atob(base64ImageData.split(',')[1])
-      const byteArray = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-         byteArray[i] = binaryString.charCodeAt(i);
-      }
-      const imageBlob = new Blob([byteArray], {type: 'image/webp'})
+      const base64ImageData = fd.get('profile_picture');
 
-      fd.delete('profile_picture')
-      fd.append('profile_picture', imageBlob, 'image.png')
+      console.log(typeof(base64ImageData));
+
+      if (base64ImageData !== null) {
+         const binaryString = atob(base64ImageData.split(',')[1]);
+         const byteArray = new Uint8Array(binaryString.length);
+         for (let i = 0; i < binaryString.length; i++) {
+            byteArray[i] = binaryString.charCodeAt(i);
+         }
+         const imageBlob = new Blob([byteArray], { type: 'image/webp' });
+
+         fd.delete('profile_picture');
+         fd.append('profile_picture', imageBlob, 'image.png');
+      }
+
       updateUserProfile(fd).then((response) => {
-         if(response.type === 'success') {
+         if (response.type === 'success') {
             navigate('/')
          }
       })
