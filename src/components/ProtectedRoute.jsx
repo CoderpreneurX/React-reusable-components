@@ -10,6 +10,15 @@ export default function ProtectedRoute({ children }) {
    const navigate = useNavigate()
 
    useEffect(() => {
+      const tokenRefreshInterval = setInterval(() => {
+         refreshAccessToken()
+      }, 1740000)
+      return () => {
+         clearInterval(tokenRefreshInterval)
+      }
+   }, [])
+
+   useEffect(() => {
       if (isUserAuthenticated()) {
          setIsAuthenticated(true)
          setLoading(false) // Set loading to false when authentication is done
